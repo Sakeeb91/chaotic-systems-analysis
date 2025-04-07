@@ -1,104 +1,187 @@
-# Chaotic System Analysis
+# 🌀 Chaotic System Analysis Toolkit
 
-A Python toolkit for simulating chaotic systems, reconstructing attractors using time-delay embedding, and estimating fractal dimensions.
+![GitHub](https://img.shields.io/github/license/Sakeeb91/chaotic-systems-analysis?style=flat-square)
+![Python](https://img.shields.io/badge/python-3.6+-blue.svg?style=flat-square&logo=python&logoColor=white)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=flat-square&logo=numpy&logoColor=white)
+![SciPy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=flat-square&logo=scipy&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=flat-square&logo=Matplotlib&logoColor=black)
 
-## Project Overview
+<p align="center">
+  <img src="https://github.com/Sakeeb91/chaotic-systems-analysis/raw/main/docs/images/rossler_3d.png" alt="Rössler Attractor" width="400"/>
+</p>
 
-This project implements the following workflow:
+> A comprehensive Python toolkit for simulating chaotic systems, reconstructing attractors using time-delay embedding, and estimating fractal dimensions. This project demonstrates advanced mathematical modeling, data analysis techniques, and scientific visualization.
 
-1. **Simulation**: Simulate a chaotic system (currently supports the Rössler system) and generate time series data.
-2. **Reconstruction**: Use time-delay embedding to reconstruct the attractor from a single time series.
-3. **Dimension Estimation**: Estimate the correlation dimension of the reconstructed attractor.
-4. **Visualization**: Generate detailed plots and dashboards for each simulation run.
+## 🚀 Features
 
-## Requirements
+- **Chaotic System Simulation**: Accurately simulate the Rössler system with configurable parameters
+- **Time-Delay Embedding**: Reconstruct higher-dimensional attractors from a single time series
+- **Fractal Dimension Estimation**: Calculate the correlation dimension using the Grassberger-Procaccia algorithm
+- **Automatic Parameter Selection**: Determine optimal embedding parameters using mutual information
+- **Beautiful Visualizations**: Generate high-quality plots with detailed dashboards for each analysis
+- **Comprehensive Testing**: Unit tests for all components ensure reliability and correctness
 
-- Python 3.6+
-- NumPy
-- SciPy
-- Matplotlib
+## 📊 Gallery
 
-Install the dependencies:
+<p align="center">
+  <img src="https://github.com/Sakeeb91/chaotic-systems-analysis/raw/main/docs/images/phase_space.png" alt="Phase Space" width="400"/>
+  <img src="https://github.com/Sakeeb91/chaotic-systems-analysis/raw/main/docs/images/embedded_attractor.png" alt="Embedded Attractor" width="400"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/Sakeeb91/chaotic-systems-analysis/raw/main/docs/images/mutual_information.png" alt="Mutual Information" width="400"/>
+  <img src="https://github.com/Sakeeb91/chaotic-systems-analysis/raw/main/docs/images/dimension_estimation.png" alt="Dimension Estimation" width="400"/>
+</p>
+
+## 🧠 Technical Skills Demonstrated
+
+- **Scientific Computing**: Advanced mathematical modeling of nonlinear dynamical systems
+- **Signal Processing**: Time-series analysis and reconstruction techniques
+- **Data Visualization**: Creating informative, publication-quality visualizations
+- **Software Architecture**: Modular, maintainable code organization with separation of concerns
+- **Testing**: Comprehensive unit testing with edge case handling
+- **Documentation**: Clear documentation with theoretical background and practical usage examples
+
+## 🔧 Installation
 
 ```bash
-pip install numpy scipy matplotlib
+# Clone the repository
+git clone https://github.com/Sakeeb91/chaotic-systems-analysis.git
+cd chaotic-systems-analysis
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-## Usage
+## 📝 Usage
 
-### Basic Usage
-
-Run the main script with default parameters:
+### Basic Simulation
 
 ```bash
 python main.py
 ```
 
 This will:
-1. Simulate the Rössler system with default parameters (a=0.2, b=0.2, c=5.7)
+1. Simulate the Rössler system with default parameters
 2. Reconstruct the attractor using time-delay embedding
 3. Estimate the correlation dimension
-4. Generate a dashboard with plots and results in the `results` directory
+4. Generate a dashboard with plots and analysis in the `results` directory
 
-### Command-Line Arguments
-
-Customize the simulation and analysis with various command-line arguments:
+### Advanced Usage
 
 ```bash
-python main.py --system rossler --a 0.2 --b 0.2 --c 5.7 --t_end 500 --dt 0.01 --embedding_dim 3
+# Change system parameters
+python main.py --a 0.1 --b 0.1 --c 14.0
+
+# Modify embedding parameters
+python main.py --embedding_dim 4 --embedding_var 1
+
+# Adjust simulation length and transient removal
+python main.py --t_end 1000 --discard_transient 200
 ```
 
-Key parameters:
-- `--system`: The chaotic system to simulate (currently only 'rossler' is supported)
-- `--a`, `--b`, `--c`: Parameters for the Rössler system
-- `--initial_state`: Initial conditions (comma-separated)
-- `--t_start`, `--t_end`: Time span for simulation
-- `--dt`: Time step for output
-- `--discard_transient`: Time to discard as transient
-- `--embedding_var`: Variable to use for embedding (0=x, 1=y, 2=z)
-- `--embedding_dim`: Embedding dimension
-- `--delay`: Time delay (in indices). If not specified, calculated automatically
-- `--results_dir`: Directory to save results
+### Example Dashboard
 
-Run `python main.py --help` for a complete list of options.
+Each run produces a comprehensive dashboard with:
 
-## Example Results
+- Time series plots for all variables
+- Original 3D attractor visualization
+- 2D projections of the phase space
+- Reconstructed attractor from embedding
+- Mutual information analysis for optimal delay selection
+- Correlation dimension estimation with scaling region
 
-After running the simulation, results will be saved in a timestamped directory under `results/`. Each run includes:
+## 📂 Project Structure
 
-- Time series plots for each variable
-- Phase space plots of the original attractor
-- The reconstructed attractor from time-delay embedding
-- Mutual information plot (if delay was calculated automatically)
-- Correlation dimension estimation plot
-- A comprehensive dashboard with all plots and parameters
-
-## Running Tests
-
-Unit tests can be run with:
-
-```bash
-python -m unittest test_chaotic_analysis.py
+```
+chaotic-systems-analysis/
+├── chaotic_systems.py    # ODE implementations and simulation functions
+├── embedding.py          # Time-delay embedding and dimension estimation
+├── visualization.py      # Plotting and results management
+├── main.py               # Command-line interface and workflow
+├── test_chaotic_analysis.py  # Comprehensive unit tests
+└── requirements.txt      # Dependencies
 ```
 
-## Components
+## 🔍 Core Components
 
-- `chaotic_systems.py`: Implementation of chaotic system ODEs and simulation functions
-- `embedding.py`: Time-delay embedding and dimension estimation algorithms
-- `visualization.py`: Plotting and results management
-- `main.py`: Main script to run the complete workflow
-- `test_chaotic_analysis.py`: Unit tests for all components
+### Chaotic Systems Module
 
-## Extending the Project
+Implements differential equations for chaotic systems and provides simulation capabilities:
 
-To add support for additional chaotic systems:
+```python
+# Rössler system with customizable parameters
+def rossler_system(t, state, a=0.2, b=0.2, c=5.7):
+    x, y, z = state
+    dx_dt = -y - z
+    dy_dt = x + a * y
+    dz_dt = b + z * (x - c)
+    return [dx_dt, dy_dt, dz_dt]
+```
 
-1. Add the system's ODE function to `chaotic_systems.py`
-2. Update `main.py` to include the new system as an option
-3. Add appropriate command-line arguments for the system's parameters
+### Embedding Module
 
-## References
+Provides tools for attractor reconstruction and dimension estimation:
+
+```python
+# Time-delay embedding to reconstruct attractor
+embedded_data = time_delay_embedding(time_series, embedding_dim, delay)
+
+# Optimal delay selection via mutual information
+optimal_delay = find_optimal_delay(time_series)
+
+# Correlation dimension estimation
+dim_results = estimate_correlation_dimension(embedded_data)
+```
+
+### Visualization Module
+
+Generates beautiful plots and comprehensive dashboards:
+
+```python
+# Initialize results manager for a run
+results_mgr = ResultsManager()
+
+# Plot time series data
+results_mgr.plot_time_series(time, values)
+
+# Plot 3D phase space
+results_mgr.plot_phase_space(states)
+
+# Create correlation dimension plot
+results_mgr.plot_correlation_dimension(dim_results, embedding_dim)
+```
+
+## 🔮 Future Enhancements
+
+- Add support for additional chaotic systems (Lorenz, Duffing, etc.)
+- Implement Lyapunov exponent estimation
+- Create automated parameter sweeps to study bifurcations
+- Add interactive 3D visualizations with Plotly
+- Develop a web interface for result exploration
+
+## 📚 Academic Background
+
+This project implements concepts from:
+
+- **Nonlinear Dynamics**: Chaotic systems and strange attractors
+- **Embedding Theory**: Takens' embedding theorem
+- **Fractal Geometry**: Dimension estimation of strange attractors
+- **Time Series Analysis**: Reconstruction of dynamics from observational data
+
+## 🔗 References
 
 - Takens, F. (1981). "Detecting strange attractors in turbulence"
 - Grassberger, P., & Procaccia, I. (1983). "Measuring the strangeness of strange attractors"
-- Rössler, O. E. (1976). "An equation for continuous chaos" 
+- Rössler, O. E. (1976). "An equation for continuous chaos"
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+<p align="center">
+  <i>Created for analyzing chaotic electronic circuit data</i><br>
+  <i>© 2023 Shafkat Rahman</i>
+</p> 
