@@ -1,0 +1,60 @@
+title: "Chaotic Systems Analysis"
+description: "Advanced Mathematical Toolkit for Nonlinear Dynamical Systems"
+author: "Shafkat Rahman"
+email: "rahman.sakeeb@gmail.com"
+url: "https://sakeeb91.github.io/chaotic-systems-analysis"
+baseurl: "/chaotic-systems-analysis"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Navigation
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "Technical Report"
+    url: "/technical-report/"
+  - title: "Methodology"
+    url: "/methodology/"
+  - title: "Visualizations"
+    url: "/visualizations/"
+
+# SEO settings
+lang: en_US
+twitter:
+  username: Sakeeb91
+  card: summary_large_image
+
+social:
+  name: Shafkat Rahman
+  links:
+    - https://github.com/Sakeeb91
+    - https://linkedin.com/in/shafkat-rahman/
+    - https://twitter.com/Sakeeb91
+
+# Google Analytics (optional)
+# google_analytics: 
+
+# Exclude files
+exclude:
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
+
+# Include files
+include:
+  - _pages
+
+# Collections
+collections:
+  pages:
+    output: true
+    permalink: /:name/

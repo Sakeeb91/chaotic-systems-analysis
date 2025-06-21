@@ -347,16 +347,15 @@
         .viz-image {
             width: 100%;
             height: 250px;
+            background: linear-gradient(45deg, #f0f9ff, #e0e7ff);
             border-radius: 0.5rem;
             margin-bottom: 1rem;
-            object-fit: cover;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease;
-        }
-
-        .viz-image:hover {
-            transform: scale(1.02);
-            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            border: 2px dashed var(--border-color);
         }
 
         .viz-title {
@@ -624,7 +623,7 @@
             </p>
             <div class="viz-grid fade-in-up">
                 <div class="viz-card">
-                    <img src="assets/images/rossler-attractor-3d.png" alt="3D Rössler Attractor" class="viz-image">
+                    <div class="viz-image">3D Rössler Attractor</div>
                     <h3 class="viz-title">Chaotic Attractor Analysis</h3>
                     <p class="viz-description">
                         Three-dimensional reconstruction of the Rössler strange attractor showing 
@@ -632,7 +631,7 @@
                     </p>
                 </div>
                 <div class="viz-card">
-                    <img src="assets/images/phase-portraits.png" alt="Phase Space Projections" class="viz-image">
+                    <div class="viz-image">Phase Space Projections</div>
                     <h3 class="viz-title">Phase Space Reconstruction</h3>
                     <p class="viz-description">
                         Multi-dimensional phase space projections revealing the underlying 
@@ -640,7 +639,7 @@
                     </p>
                 </div>
                 <div class="viz-card">
-                    <img src="assets/images/correlation-dimension.png" alt="Correlation Dimension Analysis" class="viz-image">
+                    <div class="viz-image">Correlation Dimension Plot</div>
                     <h3 class="viz-title">Fractal Dimension Analysis</h3>
                     <p class="viz-description">
                         Grassberger-Procaccia correlation dimension estimation showing the 
@@ -648,7 +647,7 @@
                     </p>
                 </div>
                 <div class="viz-card">
-                    <img src="assets/images/embedding-analysis.png" alt="Embedding Parameter Analysis" class="viz-image">
+                    <div class="viz-image">Embedding Parameters</div>
                     <h3 class="viz-title">Parameter Optimization</h3>
                     <p class="viz-description">
                         Automated selection of optimal embedding parameters using mutual 
