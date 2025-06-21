@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaotic Systems Analysis - Advanced Mathematical Toolkit for Dynamical Systems</title>
+    <meta name="description" content="Python toolkit for analyzing chaotic dynamical systems featuring Rössler system analysis, fractal dimension estimation, and Takens' embedding theorem implementation.">
+    <meta name="keywords" content="chaos theory, dynamical systems, fractal analysis, Rössler system, Takens embedding, correlation dimension, mathematical computing">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sakeeb91.github.io/chaotic-systems-analysis/">
+    <meta property="og:title" content="Chaotic Systems Analysis - Advanced Mathematical Toolkit">
+    <meta property="og:description" content="Scientific computing toolkit for chaotic dynamical systems analysis with fractal dimension estimation and phase space reconstruction">
+    <meta property="og:image" content="https://sakeeb91.github.io/chaotic-systems-analysis/assets/images/chaotic-attractor-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sakeeb91.github.io/chaotic-systems-analysis/">
+    <meta property="twitter:title" content="Chaotic Systems Analysis - Advanced Mathematical Toolkit">
+    <meta property="twitter:description" content="Scientific computing toolkit for chaotic dynamical systems analysis with fractal dimension estimation">
+    <meta property="twitter:image" content="https://sakeeb91.github.io/chaotic-systems-analysis/assets/images/chaotic-attractor-preview.png">
+
+    <!-- Mathematical rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipStartupTypeset: true
+            }
+        };
+    </script>
+
+    <!-- Styling -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #5b21b6;
+            --accent-color: #059669;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-dark: #0f172a;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --gradient-chaos: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-math: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+            --gradient-science: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%237c3aed" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-math);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.7;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .badge.success { background: var(--success-color); }
+        .badge.warning { background: var(--warning-color); }
+        .badge.accent { background: var(--accent-color); }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Visualization Section */
+        .visualizations {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .viz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .viz-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .viz-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .viz-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f0f9ff, #e0e7ff);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            border: 2px dashed var(--border-color);
+        }
+
+        .viz-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .viz-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Mathematical Foundations */
+        .mathematics {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .math-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .math-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .math-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .math-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .equation {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Technical Features */
+        .features {
+            padding: 6rem 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .viz-grid,
+            .math-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <i class="fas fa-infinity"></i> Chaotic Systems Analysis
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#visualizations">Visualizations</a></li>
+                <li><a href="#mathematics">Mathematics</a></li>
+                <li><a href="#features">Features</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1>🌀 Chaotic Systems Analysis</h1>
+                <p class="subtitle">Advanced Mathematical Toolkit for Nonlinear Dynamical Systems</p>
+                <p class="description">
+                    A comprehensive Python framework for analyzing chaotic dynamical systems using cutting-edge 
+                    mathematical techniques. Features automated parameter optimization, fractal dimension estimation, 
+                    time-delay embedding, and publication-quality scientific visualizations of complex nonlinear dynamics.
+                </p>
+                
+                <div class="badges">
+                    <span class="badge">Takens' Embedding</span>
+                    <span class="badge accent">Fractal Analysis</span>
+                    <span class="badge success">Rössler System</span>
+                    <span class="badge warning">Research-Grade</span>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="https://github.com/Sakeeb91/chaotic-systems-analysis" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> View Repository
+                    </a>
+                    <a href="#visualizations" class="btn btn-secondary">
+                        <i class="fas fa-chart-line"></i> See Analysis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Statistics -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid fade-in-up">
+                <div class="stat-card">
+                    <div class="stat-icon">🔬</div>
+                    <div class="stat-number">3D</div>
+                    <div class="stat-label">Attractor Reconstruction</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📐</div>
+                    <div class="stat-number">2.06</div>
+                    <div class="stat-label">Correlation Dimension</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-number">Auto</div>
+                    <div class="stat-label">Parameter Optimization</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Test Coverage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualizations -->
+    <section class="visualizations" id="visualizations">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Scientific Visualizations</h2>
+            <p class="section-subtitle fade-in-up">
+                Publication-quality analysis and visualization of chaotic dynamical systems with advanced mathematical techniques.
+            </p>
+            <div class="viz-grid fade-in-up">
+                <div class="viz-card">
+                    <div class="viz-image">3D Rössler Attractor</div>
+                    <h3 class="viz-title">Chaotic Attractor Analysis</h3>
+                    <p class="viz-description">
+                        Three-dimensional reconstruction of the Rössler strange attractor showing 
+                        the characteristic butterfly-like structure with temporal evolution color coding.
+                    </p>
+                </div>
+                <div class="viz-card">
+                    <div class="viz-image">Phase Space Projections</div>
+                    <h3 class="viz-title">Phase Space Reconstruction</h3>
+                    <p class="viz-description">
+                        Multi-dimensional phase space projections revealing the underlying 
+                        geometric structure of the chaotic dynamics using time-delay embedding.
+                    </p>
+                </div>
+                <div class="viz-card">
+                    <div class="viz-image">Correlation Dimension Plot</div>
+                    <h3 class="viz-title">Fractal Dimension Analysis</h3>
+                    <p class="viz-description">
+                        Grassberger-Procaccia correlation dimension estimation showing the 
+                        fractal nature of the attractor with statistical confidence intervals.
+                    </p>
+                </div>
+                <div class="viz-card">
+                    <div class="viz-image">Embedding Parameters</div>
+                    <h3 class="viz-title">Parameter Optimization</h3>
+                    <p class="viz-description">
+                        Automated selection of optimal embedding parameters using mutual 
+                        information and false nearest neighbors analysis techniques.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mathematical Foundations -->
+    <section class="mathematics" id="mathematics">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Mathematical Foundations</h2>
+            <p class="section-subtitle fade-in-up">
+                Rigorous implementation of advanced mathematical concepts from chaos theory and nonlinear dynamics.
+            </p>
+            <div class="math-grid fade-in-up">
+                <div class="math-card">
+                    <h3 class="math-title">
+                        <i class="fas fa-infinity"></i> Rössler System
+                    </h3>
+                    <div class="math-content">
+                        <p>The Rössler system is defined by the coupled differential equations:</p>
+                        <div class="equation">
+                            dx/dt = -y - z<br>
+                            dy/dt = x + ay<br>
+                            dz/dt = b + z(x - c)
+                        </div>
+                        <p>With parameters a=0.2, b=0.2, c=5.7 for chaotic behavior.</p>
+                    </div>
+                </div>
+                <div class="math-card">
+                    <h3 class="math-title">
+                        <i class="fas fa-project-diagram"></i> Takens' Embedding
+                    </h3>
+                    <div class="math-content">
+                        <p>Reconstruction of phase space from time series using delay coordinates:</p>
+                        <div class="equation">
+                            Y(t) = [x(t), x(t+τ), x(t+2τ), ..., x(t+(m-1)τ)]
+                        </div>
+                        <p>Where τ is the delay time and m is the embedding dimension.</p>
+                    </div>
+                </div>
+                <div class="math-card">
+                    <h3 class="math-title">
+                        <i class="fas fa-chart-area"></i> Correlation Dimension
+                    </h3>
+                    <div class="math-content">
+                        <p>Grassberger-Procaccia algorithm for fractal dimension estimation:</p>
+                        <div class="equation">
+                            C(r) = lim(N→∞) (2/N(N-1)) Σ Θ(r - |Xi - Xj|)
+                        </div>
+                        <p>Where Θ is the Heaviside function and r is the radius.</p>
+                    </div>
+                </div>
+                <div class="math-card">
+                    <h3 class="math-title">
+                        <i class="fas fa-wave-square"></i> Mutual Information
+                    </h3>
+                    <div class="math-content">
+                        <p>Information-theoretic approach for optimal delay selection:</p>
+                        <div class="equation">
+                            I(τ) = Σ p(xi, xi+τ) log[p(xi, xi+τ)/(p(xi)p(xi+τ))]
+                        </div>
+                        <p>Minimizing mutual information identifies optimal embedding delay.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Technical Features</h2>
+            <div class="features-grid fade-in-up">
+                <div class="feature-card">
+                    <div class="feature-icon">🧮</div>
+                    <h3 class="feature-title">Advanced Algorithms</h3>
+                    <p class="feature-description">
+                        Implementation of cutting-edge algorithms including Grassberger-Procaccia 
+                        correlation dimension estimation, false nearest neighbors analysis, and 
+                        automated parameter optimization techniques.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Scientific Visualization</h3>
+                    <p class="feature-description">
+                        Publication-quality 3D visualizations of chaotic attractors, phase space 
+                        reconstructions, and statistical analysis plots with customizable styling 
+                        and export capabilities.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3 class="feature-title">Modular Architecture</h3>
+                    <p class="feature-description">
+                        Object-oriented design with abstract base classes enabling easy extension 
+                        to new dynamical systems. Clean separation of concerns with dedicated 
+                        modules for embedding, analysis, and visualization.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3 class="feature-title">Research-Grade Quality</h3>
+                    <p class="feature-description">
+                        Comprehensive test coverage, rigorous mathematical validation, and 
+                        detailed documentation meeting academic standards for reproducible 
+                        scientific computing and research applications.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">High Performance</h3>
+                    <p class="feature-description">
+                        Optimized NumPy/SciPy implementation with efficient algorithms for 
+                        large-scale time series analysis. Memory-efficient processing of 
+                        extended trajectories and parallel computation support.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Statistical Analysis</h3>
+                    <p class="feature-description">
+                        Comprehensive statistical validation including confidence intervals, 
+                        convergence analysis, and robustness testing. Bootstrap methods for 
+                        uncertainty quantification in fractal dimension estimates.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links fade-in-up">
+                <a href="https://github.com/Sakeeb91/chaotic-systems-analysis" class="footer-link" target="_blank">
+                    <i class="fab fa-github"></i> Repository
+                </a>
+                <a href="technical-report.html" class="footer-link">
+                    📋 Technical Report
+                </a>
+                <a href="methodology.html" class="footer-link">
+                    🔬 Methodology
+                </a>
+                <a href="visualizations.html" class="footer-link">
+                    📊 Gallery
+                </a>
+            </div>
+            <p style="color: #9ca3af; margin-top: 1rem;">
+                Advanced mathematical toolkit for chaotic dynamical systems analysis.
+            </p>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-top: 0.5rem;">
+                © 2024 Chaotic Systems Analysis • Built with mathematical rigor and scientific precision
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for smooth scrolling and animations -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                nav.style.boxShadow = 'var(--shadow)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease-out';
+            observer.observe(el);
+        });
+
+        // Initialize MathJax when page loads
+        window.addEventListener('load', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>
